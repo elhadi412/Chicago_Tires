@@ -1,0 +1,27 @@
+To download the "Swing Application" tools, go to the following:
+	1) Help (on the main menu) -> Install New Software
+	2) click dropdown next to 'add'
+	3) Select General Purpose Tools
+	4) Check "Swing Designer" and everything below it until the last "Window Builder"
+	5) Hit next
+	6) Accept agreement
+	7) Hit finish
+	8) Restart Eclipse
+	9) To access the Swing Application in eclipse, go to File -> New -> Other -> Window Builder -> Swing Designer -> check Application Window
+	10) You're set!
+	
+
+JDBC Driver:To set up JDBC in eclipse, you have to download the JDBC driver. To do so
+			go to this following link and download the 2nd file: https://bitbucket.org/xerial/sqlite-jdbc/downloads/
+			
+			• Then to add it to the eclipse class file path do the following:
+			1) Make a new folder by right clicking on the highest level folder of the class and create a new folder
+			2) Drag the new downloaded JDBC driver into this new folder
+			3)  Right click on 'JRE System Library [JavaSE-1.8]
+			4) Build Path -> Configure Path
+			5) Click 'Add Jars' and find the new folder, and then select the downloaded JDBC driver that's inside of it
+			6) Now you should see the JDBC driver under 'Referenced Libraries' folder of your class folder
+			7) You're set!
+			
+		
+	To convert a java file to a native (macOS) app go to: https://www.youtube.com/watch?v=OeHv1FT4_Z8
