@@ -3,7 +3,7 @@ This is an inventory system for a local well respected auto-repair and tire shop
 in Iowa City, IA. The business is called Chicago Used and New Tires LLC. They
 offer competitive prices for great used tires that are like new. 
 
-From the end-user's perspective, this is a standalone desktop application thata can be 
+From the end-user's perspective, this is a standalone desktop application that can be 
 ran on any machine. From the developer's perspective, the code base is written in 
 Java and Swing design framework. To store inventory, the system leverages the SQLITE database.
 
