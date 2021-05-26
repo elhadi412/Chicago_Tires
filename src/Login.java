@@ -19,6 +19,20 @@ public class Login {
 	 */
 	JFrame getFrame(){return frame;}
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}catch (ClassNotFoundException e2){
+			e2.printStackTrace();
+		}catch(InstantiationException e3){
+			e3.printStackTrace();
+			
+		}catch (IllegalAccessException e4){
+			e4.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -183,14 +197,14 @@ public class Login {
 		pageLbl.setBounds(0, -21, 71, 132);
 		frame.getContentPane().add(pageLbl);
 		
-		lblNewLabel = new JLabel("Chicago Tires Inventory System");
-		lblNewLabel.setFont(new Font("Lucida Grande", Font.BOLD, 19));
+		lblNewLabel = new JLabel("Chicago Tires Inventory");
+		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 19));
 		lblNewLabel.setBounds(111, 17, 333, 35);
 		frame.getContentPane().add(lblNewLabel);
 		
 		label = new JLabel("Chicago Tires LLC");
 		label.setFont(new Font("Kokonor", Font.BOLD, 16));
-		label.setBounds(0, 251, 133, 27);
+		label.setBounds(0, 241, 235, 27);
 		frame.getContentPane().add(label);
 		
 		JLabel pageLbl2 = new JLabel("");

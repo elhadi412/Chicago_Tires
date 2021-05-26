@@ -1,20 +1,11 @@
-import java.awt.BorderLayout;
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.Time;
-import java.util.concurrent.TimeUnit;
-
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
-
-import org.apache.poi.hemf.record.emf.HemfDraw.EmfPolyline16;
-
 import java.awt.Color;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
@@ -69,7 +60,7 @@ public class InsertTire extends JFrame {
 		connection = SqliteConnection.dbConnector();
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 624, 480);
+		setBounds(100, 100, 643, 507);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 153, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -104,53 +95,53 @@ public class InsertTire extends JFrame {
 		locationJLabel = new JLabel("Location:");
 		locationJLabel.setForeground(Color.BLACK);
 		locationJLabel.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		locationJLabel.setBounds(101, 152, 88, 31);
+		locationJLabel.setBounds(97, 173, 88, 31);
 		contentPane.add(locationJLabel);
 		
 		locationTxtField = new JTextField();
 		locationTxtField.setColumns(10);
 		locationTxtField.setBackground(Color.LIGHT_GRAY);
-		locationTxtField.setBounds(182, 145, 184, 46);
+		locationTxtField.setBounds(178, 166, 184, 46);
 		contentPane.add(locationTxtField);
 		
 		lblCondition = new JLabel("Condition (A-C):");
 		lblCondition.setForeground(Color.BLACK);
 		lblCondition.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		lblCondition.setBounds(47, 221, 133, 31);
+		lblCondition.setBounds(47, 247, 133, 31);
 		contentPane.add(lblCondition);
 		
 		lblSetpairsingle = new JLabel("Set/Pair/Single:");
 		lblSetpairsingle.setForeground(Color.BLACK);
 		lblSetpairsingle.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		lblSetpairsingle.setBounds(51, 290, 122, 31);
+		lblSetpairsingle.setBounds(47, 308, 122, 31);
 		contentPane.add(lblSetpairsingle);
 		
 		JComboBox tire_orientation = new JComboBox(tireOrientation);
-		tire_orientation.setBounds(182, 280, 174, 55);
+		tire_orientation.setBounds(178, 298, 174, 55);
 		contentPane.add(tire_orientation);
 		
 		JComboBox tireBrands = new JComboBox(tireBrandz);
-		tireBrands.setBounds(182, 330, 174, 55);
+		tireBrands.setBounds(176, 365, 174, 55);
 		contentPane.add(tireBrands);
 		
 		JComboBox conditionBox = new JComboBox(tireCondition);
-		conditionBox.setBounds(182, 217, 174, 43);
+		conditionBox.setBounds(178, 243, 174, 43);
 		contentPane.add(conditionBox);
 		
 		lblNewLabel_1 = new JLabel("Add a New Tire to Inventory");
 		lblNewLabel_1.setFont(new Font("Microsoft Sans Serif", Font.BOLD, 20));
-		lblNewLabel_1.setBounds(158, 8, 246, 55);
+		lblNewLabel_1.setBounds(158, 8, 402, 55);
 		contentPane.add(lblNewLabel_1);
 		
 		addNewTrIcon = new JLabel("");
 		Image insertPgIcon = new ImageIcon(this.getClass().getResource("/tireIconBigger.png")).getImage();
 		addNewTrIcon.setIcon(new ImageIcon(insertPgIcon));
-		addNewTrIcon.setBounds(378, 83, 244, 265);
+		addNewTrIcon.setBounds(393, 98, 244, 265);
 		contentPane.add(addNewTrIcon);
 		
 		label = new JLabel("Chicago Tires LLC");
 		label.setFont(new Font("Kokonor", Font.BOLD, 16));
-		label.setBounds(489, 431, 133, 27);
+		label.setBounds(427, 452, 210, 27);
 		contentPane.add(label);
 		
 	
@@ -218,13 +209,13 @@ public class InsertTire extends JFrame {
 		
 		
 		insertBtn.setForeground(new Color(51, 204, 51));
-		insertBtn.setBounds(239, 397, 63, 36);
+		insertBtn.setBounds(236, 432, 63, 36);
 		contentPane.add(insertBtn);
 		
 		JLabel brandLbl = new JLabel("Brand:");
 		brandLbl.setForeground(Color.BLACK);
 		brandLbl.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		brandLbl.setBounds(124, 343, 56, 31);
+		brandLbl.setBounds(118, 378, 56, 31);
 		contentPane.add(brandLbl);
 		
 	

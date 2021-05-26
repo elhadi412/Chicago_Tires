@@ -27,6 +27,20 @@ public class Tires extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		try {
+			UIManager.setLookAndFeel(UIManager.getSystemLookAndFeelClassName());
+
+		} catch (UnsupportedLookAndFeelException e) {
+			// TODO: handle exception
+			e.printStackTrace();
+		}catch (ClassNotFoundException e2){
+			e2.printStackTrace();
+		}catch(InstantiationException e3){
+			e3.printStackTrace();
+			
+		}catch (IllegalAccessException e4){
+			e4.printStackTrace();
+		}
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -148,7 +162,7 @@ public class Tires extends JFrame {
 		Image image = new ImageIcon(this.getClass().getResource("/tireIcon.png")).getImage();
 		tireInstck.setIcon(new ImageIcon(image));
 		tireInstck.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 17));
-		tireInstck.setBounds(0, 6, 195, 38);
+		tireInstck.setBounds(0, 6, 398, 38);
 		contentPane.add(tireInstck);
 		
 		txtPlaceholder = new JTextField();
@@ -228,7 +242,7 @@ public class Tires extends JFrame {
 		btnRemoveTire.setIcon(new ImageIcon(rmvTireIcon));
 		btnRemoveTire.setForeground(new Color(255, 51, 51));
 		btnRemoveTire.setBackground(new Color(51, 153, 102));
-		btnRemoveTire.setBounds(125, 664, 121, 38);
+		btnRemoveTire.setBounds(125, 664, 163, 38);
 		contentPane.add(btnRemoveTire);
 		
 		JButton btnLoadAllTires = new JButton("Load All Tires");
@@ -278,7 +292,7 @@ public class Tires extends JFrame {
 		});
 		btnLoadAllTires.setForeground(new Color(51, 153, 102));
 		btnLoadAllTires.setBackground(new Color(51, 153, 102));
-		btnLoadAllTires.setBounds(257, 664, 133, 38);
+		btnLoadAllTires.setBounds(294, 664, 133, 38);
 		contentPane.add(btnLoadAllTires);
 		
 	
@@ -309,7 +323,7 @@ public class Tires extends JFrame {
 			}
 		});
 		btnNewButton.setForeground(Color.RED);
-		btnNewButton.setBounds(746, 30, 71, 35);
+		btnNewButton.setBounds(725, 30, 117, 35);
 		contentPane.add(btnNewButton);
 		
 		JButton btnExportToExcel = new JButton("Export to Excel");
@@ -325,7 +339,7 @@ public class Tires extends JFrame {
 				}
 			}
 		});
-		btnExportToExcel.setBounds(402, 664, 127, 38);
+		btnExportToExcel.setBounds(439, 664, 127, 38);
 		contentPane.add(btnExportToExcel);
 		
 		JLabel user = new JLabel("USER");
