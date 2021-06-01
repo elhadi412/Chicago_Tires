@@ -15,6 +15,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.sql.Timestamp;
 import javax.swing.JComboBox;
 
@@ -22,7 +24,11 @@ public class InsertTire extends JFrame {
 
 	private JPanel contentPane;
 	private final String[] tireOrientation = new String[]{"N/A","Set","Pair","Single"};
-	private final String[] tireBrandz = new String[]{"Select Brand","ADVANTA","AVON TYRES","BFGoodrich","BRIDGESTONE","Continental","COOPER TIRES", "Dick CEPEK","DUNLOP TIRES","FALKEN TIRES","Firestone","FUZION","GENERAL TIRE", "GOOD YEAR", "Hankook","Hoosier RACING TIRE","KUMHO TIRE", "Laufenn","MICHELIN","NEXEN TIRE","PIRELLI","POWER KING","RIKEN", "SUMITOMO TIRES","TOYOTIRES","UNIROYAL","VREDESTEIN TIRES", "YOKOHAMA"};
+	private static final String[] tireBrandz = new String[]{"Select Brand", "ADVANTA", "AVON TYRES", "BFGOODRICH", "BRIDGESTONE", "COOPER TIRES", "CONTINENTAL", "DUNLOP TIRES", 
+															"DURO", "DICK CEPEK", "FALKEN TIRES", "FUZION", "FIRESTONE", "GENERAL TIRE", "GOOD YEAR", "HANKOOK", "HOOSIER RACING TIRE", 
+															"KUMHO TIRE", "LAUFENN", "MICHELIN", "MILESTAR", "NEXEN TIRE", "PIRELLI", "POWER KING", "RIKEN", "SUMITOMO TIRES", "TOYOTIRES",
+															"UNIROYAL", "VREDESTEIN TIRES", "WEST LAKE", "YOKOHAMA"};
+	private static ArrayList<String> brandList = new ArrayList<>(Arrays.asList(tireBrandz));
 	private final String[] tireCondition = new String[]{"Select Condition","A","B","C","New"};
 
 	
@@ -52,6 +58,9 @@ public class InsertTire extends JFrame {
 	private JLabel addNewTrIcon;
 	private JLabel label;
 	private JButton insertBtn;
+	private JComboBox tire_orientation;
+	private JComboBox tireBrands;
+	private JComboBox conditionBox;
 
 	/**
 	 * Create the frame.
@@ -77,12 +86,13 @@ public class InsertTire extends JFrame {
 		});
 		Image goBackImg = new ImageIcon(this.getClass().getResource("/goBack.png")).getImage();
 		goBckBtn.setIcon(new ImageIcon(goBackImg));
-		goBckBtn.setBounds(21, 19, 77, 38);
+		goBckBtn.setBounds(21, 19, 96, 38);
 		contentPane.add(goBckBtn);
 		
 		sizeTxtField = new JTextField();
-		sizeTxtField.setBackground(Color.LIGHT_GRAY);
-		sizeTxtField.setBounds(182, 83, 184, 46);
+		sizeTxtField.setForeground(new Color(0, 153, 255));
+		sizeTxtField.setBackground(Color.WHITE);
+		sizeTxtField.setBounds(178, 84, 184, 46);
 		contentPane.add(sizeTxtField);
 		sizeTxtField.setColumns(10);
 		
@@ -99,8 +109,9 @@ public class InsertTire extends JFrame {
 		contentPane.add(locationJLabel);
 		
 		locationTxtField = new JTextField();
+		locationTxtField.setForeground(new Color(0, 153, 255));
 		locationTxtField.setColumns(10);
-		locationTxtField.setBackground(Color.LIGHT_GRAY);
+		locationTxtField.setBackground(Color.WHITE);
 		locationTxtField.setBounds(178, 166, 184, 46);
 		contentPane.add(locationTxtField);
 		
@@ -116,21 +127,21 @@ public class InsertTire extends JFrame {
 		lblSetpairsingle.setBounds(47, 308, 122, 31);
 		contentPane.add(lblSetpairsingle);
 		
-		JComboBox tire_orientation = new JComboBox(tireOrientation);
+		tire_orientation = new JComboBox(tireOrientation);
 		tire_orientation.setBounds(178, 298, 174, 55);
 		contentPane.add(tire_orientation);
 		
-		JComboBox tireBrands = new JComboBox(tireBrandz);
+		tireBrands = new JComboBox(brandList.toArray());
 		tireBrands.setBounds(176, 365, 174, 55);
 		contentPane.add(tireBrands);
 		
-		JComboBox conditionBox = new JComboBox(tireCondition);
+		conditionBox = new JComboBox(tireCondition);
 		conditionBox.setBounds(178, 243, 174, 43);
 		contentPane.add(conditionBox);
 		
 		lblNewLabel_1 = new JLabel("Add a New Tire to Inventory");
 		lblNewLabel_1.setFont(new Font("Microsoft Sans Serif", Font.BOLD, 20));
-		lblNewLabel_1.setBounds(158, 8, 402, 55);
+		lblNewLabel_1.setBounds(158, 8, 305, 55);
 		contentPane.add(lblNewLabel_1);
 		
 		addNewTrIcon = new JLabel("");
@@ -149,61 +160,7 @@ public class InsertTire extends JFrame {
 		insertBtn = new JButton("Add");
 		insertBtn.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				try {
-					String query = "INSERT INTO Inventory(Size, Location, Condition, SetPairSingle, Brand,Timestamp)" + " values(?,?,?,?,?,?)";
-					
-					Integer.parseInt(sizeTxtField.getText());
-					
-					if(conditionBox.getSelectedItem().equals("Select Condition")){
-						throw new Exception();
-					}
-					
-					if(tire_orientation.getSelectedItem().toString().equals("N/A")){
-						JOptionPane.showMessageDialog(null, "Please select either Set, Pair, Single");
-					}
-					else if(tireBrands.getSelectedItem().toString().equals("Select Brand")){
-						JOptionPane.showMessageDialog(null, "Please select tire brand");
-					}
-					
-					else{
-					
-					PreparedStatement pStatement = connection.prepareStatement(query);
-					pStatement.setString(1, sizeTxtField.getText());
-					pStatement.setString(2,locationTxtField.getText());
-					pStatement.setString(3, conditionBox.getSelectedItem().toString());
-					pStatement.setString(4, tire_orientation.getSelectedItem().toString());
-					pStatement.setString(5, tireBrands.getSelectedItem().toString());
-					SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-					Timestamp timestamp = new Timestamp(System.currentTimeMillis());
-					pStatement.setString(6, simpleDateFormat.format(timestamp));
-					//String UniqueID = sizeTxtField.getText() + locationTxtField.getText();
-					//pStatement.setString(5, locationTxtField.getText()+sizeTxtField.getText());
-					
-					pStatement.execute();
-					
-					pStatement.close();
-					JOptionPane.showMessageDialog(null, "Added " + sizeTxtField.getText() + " to database.");
-					BackUp backUp = new BackUp();
-					backUp.export();
-						
-						sizeTxtField.setText("");
-						locationTxtField.setText("");
-						dispose();
-						Tires employeInfo = new Tires();
-						employeInfo.setVisible(true);
-										}
-					
-				} catch (Exception e2) {
-					// TODO: handle exception
-					if(e2.getClass().getName().equals("java.lang.NumberFormatException")){
-						JOptionPane.showMessageDialog(null,"Invalid Tire Size");
-						sizeTxtField.setText("");
-					}
-					else{
-						JOptionPane.showMessageDialog(null,"Select Condition");	
-					}
-					//e2.printStackTrace();
-				}
+				insertTires();
 			}
 		});
 		
@@ -218,10 +175,87 @@ public class InsertTire extends JFrame {
 		brandLbl.setBounds(118, 378, 56, 31);
 		contentPane.add(brandLbl);
 		
-	
-		
-		
-		
+		JButton btnAddTireBrand = new JButton(" Add Tire Brand");
+		Image newTireIcon = new ImageIcon(this.getClass().getResource("/addTireBetter.png")).getImage();
+		btnAddTireBrand.setIcon(new ImageIcon(newTireIcon));
+		btnAddTireBrand.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				dispose();
+				AddTireBrand tireBrand = new AddTireBrand();
+				tireBrand.setVisible(true);
+				
+				
+			}
+		});
+		btnAddTireBrand.setForeground(new Color(51, 204, 51));
+		btnAddTireBrand.setBounds(483, 21, 154, 36);
+		contentPane.add(btnAddTireBrand);	
 		
 	}
+	
+	
+	/**************************************************************BUTTON LOGIC & Methods************************************************/
+
+	public static ArrayList<String> getTireList(){
+		return brandList;
+	}
+	
+	private void insertTires(){
+		try {
+			String query = "INSERT INTO Inventory(Size, Location, Condition, SetPairSingle, Brand,Timestamp)" + " values(?,?,?,?,?,?)";
+			
+			Integer.parseInt(sizeTxtField.getText());
+			
+			if(conditionBox.getSelectedItem().equals("Select Condition")){
+				throw new Exception();
+			}
+			
+			if(tire_orientation.getSelectedItem().toString().equals("N/A")){
+				JOptionPane.showMessageDialog(null, "Please select either Set, Pair, Single");
+			}
+			else if(tireBrands.getSelectedItem().toString().equals("Select Brand")){
+				JOptionPane.showMessageDialog(null, "Please select tire brand");
+			}
+			
+			else{
+			
+			PreparedStatement pStatement = connection.prepareStatement(query);
+			pStatement.setString(1, sizeTxtField.getText());
+			pStatement.setString(2,locationTxtField.getText());
+			pStatement.setString(3, conditionBox.getSelectedItem().toString());
+			pStatement.setString(4, tire_orientation.getSelectedItem().toString());
+			pStatement.setString(5, tireBrands.getSelectedItem().toString());
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			Timestamp timestamp = new Timestamp(System.currentTimeMillis());
+			pStatement.setString(6, simpleDateFormat.format(timestamp));
+			//String UniqueID = sizeTxtField.getText() + locationTxtField.getText();
+			//pStatement.setString(5, locationTxtField.getText()+sizeTxtField.getText());
+			
+			pStatement.execute();
+			
+			pStatement.close();
+			JOptionPane.showMessageDialog(null, "Added " + sizeTxtField.getText() + " to database.");
+			BackUp backUp = new BackUp();
+			backUp.export();
+				
+			sizeTxtField.setText("");
+			locationTxtField.setText("");
+			dispose();
+			Tires employeInfo = new Tires();
+			employeInfo.setVisible(true);
+			Tires.btnLoadAllTires.doClick();
+		}
+			
+		} catch (Exception e2) {
+			// TODO: handle exception
+			if(e2.getClass().getName().equals("java.lang.NumberFormatException")){
+				JOptionPane.showMessageDialog(null,"Invalid Tire Size");
+				sizeTxtField.setText("");
+			}
+			else{
+				JOptionPane.showMessageDialog(null,"Select Condition");	
+			}
+		}
+	}
+	
 }

@@ -26,7 +26,7 @@ import javax.swing.JButton;
 
 public class Delete {
 
-	private JFrame frame;
+	private static JFrame frame;
 	private JTextField uniqueTxtFLD;
 	private JLabel lblNewLabel;
 	int queryResult = 1;
@@ -66,14 +66,15 @@ public class Delete {
 	 */
 	private void initialize() {
 		connection = SqliteConnection.dbConnector();
-		
+				
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(0, 153, 255));
 		frame.setBounds(100, 100, 323, 164);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		uniqueTxtFLD = new JTextField();
+		uniqueTxtFLD.setForeground(new Color(0, 153, 255));
 		uniqueTxtFLD.setBounds(123, 50, 88, 38);
 		frame.getContentPane().add(uniqueTxtFLD);
 		uniqueTxtFLD.setColumns(10);
@@ -82,44 +83,7 @@ public class Delete {
 			@Override
 			public void keyPressed(KeyEvent e) {
 				if(e.getKeyCode() == KeyEvent.VK_ENTER){
-					Delete delete = new Delete();
-					String query = "DELETE FROM Inventory WHERE ID = ?";
-					//String query__ = "Select * from Inventory where ID = ?";
-					try{
-					Integer.parseInt(uniqueTxtFLD.getText());
-					PreparedStatement pStatement = connection.prepareStatement(query);
-
-					//1=no, 0=yes, 2=cancel
-					int input = JOptionPane.showConfirmDialog(null, "Delete Tire ID " + uniqueTxtFLD.getText() + "?");
-					if(input == 0){
-					pStatement.setInt(1, Integer.parseInt(uniqueTxtFLD.getText()));
-					int result = pStatement.executeUpdate();
-					if (result == 0){
-						queryResult=0;
-						throw new Exception();
-					}
-					frame.dispose();
-					JOptionPane.showMessageDialog(null, "Tire ID " + uniqueTxtFLD.getText() + " removed.");
-					frame.dispose();
-					
-					BackUp backUp = new BackUp();
-					backUp.export();
-					}
-					
-		
-					}
-					catch (Exception e1) {
-						// TODO: handle exception
-						if(queryResult == 0){
-							JOptionPane.showMessageDialog(null, "No such ID in database");
-						}
-						else{
-						JOptionPane.showMessageDialog(null, "Please Enter a number");
-						}
-						uniqueTxtFLD.setText("");
-						//e1.printStackTrace();
-					}
-					
+					deleteTires();
 				}
 			}
 		});
@@ -146,50 +110,58 @@ public class Delete {
 			
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Delete delete = new Delete();
-				String query = "DELETE FROM Inventory WHERE ID = ?";
-				//String query__ = "Select * from Inventory where ID = ?";
-				try{
-				Integer.parseInt(uniqueTxtFLD.getText());
-				PreparedStatement pStatement = connection.prepareStatement(query);
-
-				//1=no, 0=yes, 2=cancel
-				int input = JOptionPane.showConfirmDialog(null, "Delete Tire ID " + uniqueTxtFLD.getText() + "?");
-				if(input == 0){
-				pStatement.setInt(1, Integer.parseInt(uniqueTxtFLD.getText()));
-				int result = pStatement.executeUpdate();
-				if (result == 0){
-					queryResult=0;
-					throw new Exception();
-				}
-				frame.dispose();
-				JOptionPane.showMessageDialog(null, "Tire ID " + uniqueTxtFLD.getText() + " removed.");
-				
-				BackUp backUp = new BackUp();
-				backUp.export();
-				frame.dispose();
-				}
-				
-	
-				}
-				catch (Exception e1) {
-					// TODO: handle exception
-					if(queryResult == 0){
-						JOptionPane.showMessageDialog(null, "No such ID in database");
-					}
-					else{
-					JOptionPane.showMessageDialog(null, "Please Enter a number");
-					}
-					uniqueTxtFLD.setText("");
-					//e1.printStackTrace();
-				}
+				deleteTires();
 			}
 		});
 		
 		frame.getContentPane().add(btnDelete);
 	}
-	public JFrame getFrame(){
+	
+	
+	
+	/**************************************************************BUTTON LOGIC & Methods************************************************/
+
+	public static JFrame getFrame(){
 		return frame;
+	}
+	
+	private void deleteTires(){
+		// TODO Auto-generated method stub
+		String query = "DELETE FROM Inventory WHERE ID = ?";
+		//String query__ = "Select * from Inventory where ID = ?";
+		try{
+		Integer.parseInt(uniqueTxtFLD.getText());
+		PreparedStatement pStatement = connection.prepareStatement(query);
+
+		//1=no, 0=yes, 2=cancel
+		int input = JOptionPane.showConfirmDialog(null, "Delete Tire ID " + uniqueTxtFLD.getText() + "?");
+		if(input == 0){
+		pStatement.setInt(1, Integer.parseInt(uniqueTxtFLD.getText()));
+		int result = pStatement.executeUpdate();
+		if (result == 0){
+			queryResult=0;
+			throw new Exception();
+		}
+		JOptionPane.showMessageDialog(null, "Tire ID " + uniqueTxtFLD.getText() + " removed.");
+		BackUp backUp = new BackUp();
+		backUp.export();
+		frame.dispose();
+		Tires.btnLoadAllTires.doClick();
+
+		}
+		
+
+		}
+		catch (Exception e1) {
+			// TODO: handle exception
+			if(queryResult == 0){
+				JOptionPane.showMessageDialog(null, "No such ID in database");
+			}
+			else{
+			JOptionPane.showMessageDialog(null, "Please Enter a Tire ID");
+			}
+			uniqueTxtFLD.setText("");
+			//e1.printStackTrace();
+		}
 	}
 }

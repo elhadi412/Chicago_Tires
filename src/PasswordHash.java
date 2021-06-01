@@ -20,12 +20,13 @@ public class PasswordHash {
 	        return hashed_password;
 
 	    }
-	  public static void main(String[] args) throws NoSuchAlgorithmException{
-		  PasswordHash.hashPassword("Hodhod#5");
-	  }
+//	  public static void main(String[] args) throws NoSuchAlgorithmException{
+//		  PasswordHash.hashPassword("BigK@1630");
+//	  }
 	  //Hussein (hussein) -> Chicago_1630
 	  //Mustafa (mustafa) -> Ypsm@777
 	  //elhadi (elhadi) -> Hodhod#5
+	  //Khalid (khalid) -> BigK@1630
 
 
 
