@@ -1,26 +1,19 @@
 import java.awt.EventQueue;
-
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import java.awt.Color;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
-
 import java.awt.Font;
-import java.awt.Frame;
 import java.awt.Image;
-import java.awt.Window;
-
 import javax.swing.JTextField;
-
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 
 import javax.swing.JButton;
 
@@ -35,18 +28,19 @@ public class Delete {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Delete window = new Delete();
-					window.frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+//	public static void main(String[] args) {
+//		Tires.setTheLookAndFeel();
+//		EventQueue.invokeLater(new Runnable() {
+//			public void run() {
+//				try {
+//					Delete window = new Delete();
+//					window.frame.setVisible(true);
+//				} catch (Exception e) {
+//					e.printStackTrace();
+//				}
+//			}
+//		});
+//	}
 
 	/**
 	 * Create the application.
@@ -55,7 +49,6 @@ public class Delete {
 	Connection connection = null;
 	public Delete() {
 		initialize();
-		getFrame();
 	}
 	
 	
@@ -69,13 +62,13 @@ public class Delete {
 				
 		frame = new JFrame();
 		frame.getContentPane().setBackground(new Color(0, 153, 255));
-		frame.setBounds(100, 100, 323, 164);
+		frame.setBounds(100, 100, 350, 208);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		uniqueTxtFLD = new JTextField();
 		uniqueTxtFLD.setForeground(new Color(0, 153, 255));
-		uniqueTxtFLD.setBounds(123, 50, 88, 38);
+		uniqueTxtFLD.setBounds(147, 58, 88, 38);
 		frame.getContentPane().add(uniqueTxtFLD);
 		uniqueTxtFLD.setColumns(10);
 		
@@ -89,22 +82,22 @@ public class Delete {
 		});
 
 		
-		JLabel tiresInStockLbl = new JLabel("Chicago Tires LLC");
-		tiresInStockLbl.setFont(new Font("Lucida Grande", Font.BOLD | Font.ITALIC, 14));
-		tiresInStockLbl.setBounds(6, 0, 171, 38);
+		JLabel tiresInStockLbl = new JLabel("Delete Tires");
+		tiresInStockLbl.setFont(new Font("Microsoft Sans Serif", Font.BOLD | Font.ITALIC, 20));
+		tiresInStockLbl.setBounds(98, 0, 180, 38);
 		frame.getContentPane().add(tiresInStockLbl);
 
 		Image image = new ImageIcon(this.getClass().getResource("/tireIcon.png")).getImage();
 		tiresInStockLbl.setIcon(new ImageIcon(image));
 		
 		lblNewLabel = new JLabel("Enter ID");
-		lblNewLabel.setBounds(64, 61, 56, 16);
+		lblNewLabel.setBounds(88, 69, 56, 16);
 		frame.getContentPane().add(lblNewLabel);
 		
 		JButton btnDelete = new JButton("DELETE");
 		btnDelete.setBackground(Color.RED);
 		btnDelete.setForeground(Color.RED);
-		btnDelete.setBounds(132, 100, 71, 29);
+		btnDelete.setBounds(157, 116, 71, 29);
 		
 		btnDelete.addActionListener(new ActionListener() {
 			
@@ -115,7 +108,13 @@ public class Delete {
 		});
 		
 		frame.getContentPane().add(btnDelete);
+		
+		JLabel label = new JLabel("Chicago Tires LLC");
+		label.setFont(new Font("Kokonor", Font.BOLD, 16));
+		label.setBounds(6, 140, 210, 27);
+		frame.getContentPane().add(label);
 	}
+		
 	
 	
 	
@@ -134,7 +133,8 @@ public class Delete {
 		PreparedStatement pStatement = connection.prepareStatement(query);
 
 		//1=no, 0=yes, 2=cancel
-		int input = JOptionPane.showConfirmDialog(null, "Delete Tire ID " + uniqueTxtFLD.getText() + "?");
+		String iD = uniqueTxtFLD.getText();
+		int input = JOptionPane.showConfirmDialog(null, "<html> Delete Tire ID <b><u>" + iD + " </u></b>?</html>");
 		if(input == 0){
 		pStatement.setInt(1, Integer.parseInt(uniqueTxtFLD.getText()));
 		int result = pStatement.executeUpdate();

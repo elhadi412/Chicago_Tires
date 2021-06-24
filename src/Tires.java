@@ -1,10 +1,7 @@
 import java.awt.EventQueue;
 import java.sql.*;
-import java.util.ArrayList;
-
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
-import javax.swing.plaf.ColorUIResource;
 
 import net.proteanit.sql.DbUtils;
 import java.awt.event.ActionListener;
@@ -49,6 +46,7 @@ public class Tires extends JFrame {
 	private JTextField txtPlaceholder;
 	private JTextField numOfTires;
 	static JButton btnLoadAllTires;
+	private JButton btnRemoveTire;
 	
 	
 	/**
@@ -148,7 +146,7 @@ public class Tires extends JFrame {
 		btnAddNewTire.setBounds(6, 664, 107, 38);
 		contentPane.add(btnAddNewTire);
 		
-		JButton btnRemoveTire = new JButton("  Remove Tire");
+		btnRemoveTire = new JButton("  Remove Tire");
 		btnRemoveTire.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				removeTire();
@@ -255,12 +253,15 @@ public class Tires extends JFrame {
 	
 	
 	private static void backUpDataFile(){
+		doesFileExist();
 		try {
-			File file = new File("./data.xlsx");
+			String fullPath = System.getProperty("user.home") + File.separator +  "ChicagoTiresLLC" + File.separator + "data.xlsx";
+			File file = new File("data.xlsx");
 			FileInputStream fileInputStream = new FileInputStream(file);
 			BufferedInputStream inputStream = new BufferedInputStream(fileInputStream);
-			String homeDirectory = System.getProperty("user.home");
-			FileOutputStream fileOutputStream = new FileOutputStream(homeDirectory + "/Downloads/data.xlsx");
+			String homeDirectory = System.getProperty("user.home") + File.separator + "Downloads" + File.separator + "data.xlsx";
+			
+			FileOutputStream fileOutputStream = new FileOutputStream(homeDirectory);
 			byte data[] = new byte[1024];
 			int byteContent;
 			while((byteContent = inputStream.read(data,0,1024)) != -1){
@@ -272,9 +273,31 @@ public class Tires extends JFrame {
 
 			
 		} catch (Exception e) {
-			JOptionPane.showMessageDialog(null,"Unable to Backup");	
+			String msg = "Unable to Backup: " + e;
+			JOptionPane.showMessageDialog(null,msg);	
 			e.printStackTrace();
 
+		}
+	}
+	
+	public static void doesFileExist(){
+		try{
+			String fullPath = System.getProperty("user.home") + File.separator +  "ChicagoTiresLLC" + File.separator + "data.xlsx";
+			File file = new File(fullPath);
+			
+			//Atomically creates a new, empty file named by this abstract pathname if
+		     //and only if a file with this name does not yet exist
+			if(file.createNewFile()){
+				System.out.println("FILE DIDN'T EXIST. CREATED FILE data.xlsx for tire data!");
+			}
+			else{
+				System.out.println("FILE EXISTS ALREADY!");
+			}
+		}
+		catch (IOException e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, "WE HAVE A PROBLEM");
+			System.out.print("WE HAVE A PROBLEM");
 		}
 	}
 	
@@ -310,7 +333,7 @@ public class Tires extends JFrame {
 			setColumnWidt(table_1);
 			//table_1.getColumnModel().getColumn(table_1.getColumnCount()-1).setPreferredWidth(150);
 			
-			System.out.println ("ROW COUNT " + table_1.getRowCount());
+//			System.out.println ("ROW COUNT " + table_1.getRowCount());
 			
 			int tireCount = 0;
 			for(int row=0; row<table_1.getRowCount(); row++){
@@ -336,11 +359,9 @@ public class Tires extends JFrame {
 	}
 	
 	
-	private void search(){
-		String value = txtPlaceholder.getText().trim();
-		
+	private void search(){		
 		try {
-			Integer.parseInt(value);
+			//Integer.parseInt(value);
 			
 			String query = "select * from Inventory where Size = ?";
 			PreparedStatement pStatement = connection.prepareStatement(query);
@@ -391,13 +412,13 @@ public class Tires extends JFrame {
 	}
 	
 	private void removeTire(){
-		InsertTire obj = new InsertTire();
-		obj.dispose();
-		if( Delete.getFrame() != null){
+		//InsertTire obj = new InsertTire();
+		//obj.dispose();
+		if( Delete.getFrame()!=null){	
 			Delete.getFrame().dispose();
 		}
 		Delete delete = new Delete();
-		delete.getFrame().setVisible(true);
+		Delete.getFrame().setVisible(true);
 	}
 	
 	private void addTire(){
@@ -405,6 +426,7 @@ public class Tires extends JFrame {
 			Delete.getFrame().dispose();
 		}
 		dispose();
+		//InsertTire.doesFileExist();
 		InsertTire insertTire = new InsertTire();
 		insertTire.setVisible(true);
 	}

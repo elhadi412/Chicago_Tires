@@ -13,7 +13,6 @@ import javax.swing.JTextField;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import java.awt.Font;
-import java.util.Collections;
 
 public class AddTireBrand extends JFrame {
 
@@ -25,6 +24,7 @@ public class AddTireBrand extends JFrame {
 	 * Launch the application.
 	 */
 	public static void main(String[] args) {
+		Tires.setTheLookAndFeel();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -49,7 +49,7 @@ public class AddTireBrand extends JFrame {
 		connection = SqliteConnection.dbConnector();
 		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 550, 194);
+		setBounds(100, 100, 550, 214);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 153, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -93,7 +93,7 @@ public class AddTireBrand extends JFrame {
 		
 		label = new JLabel("Chicago Tires LLC");
 		label.setFont(new Font("Kokonor", Font.BOLD, 16));
-		label.setBounds(390, 135, 210, 27);
+		label.setBounds(394, 138, 210, 27);
 		contentPane.add(label);
 		Image newTireIcon = new ImageIcon(this.getClass().getResource("/addTireBetter.png")).getImage();
 		
@@ -154,9 +154,8 @@ public class AddTireBrand extends JFrame {
 //			
 //			
 //			
-			
-			if(brandTxtField.getText().matches("^[a-z A-Z]+$")){
-				
+		try{
+			if(brandTxtField.getText().matches("^[a-z A-Z]+$")){				
 				String tireToBeInserted = brandTxtField.getText().trim().toUpperCase();
 				//Check if it's already in the list
 				if(InsertTire.getTireList().contains(tireToBeInserted)){
@@ -167,22 +166,27 @@ public class AddTireBrand extends JFrame {
 				else{
 					int input = JOptionPane.showConfirmDialog(null, "Add Tire Brand: " + brandTxtField.getText() + "?");
 					if(input == 0){
-						InsertTire.getTireList().add(tireToBeInserted);
-						Collections.sort(InsertTire.getTireList());
-						InsertTire.getTireList().remove("Select Brand");
-						InsertTire.getTireList().add(0,"Select Brand");
+						//InsertTire.updateTireBrandFile(tireToBeInserted);
 						dispose();
+						InsertTire.doesFileExist();
+						InsertTire.updateTireBrandFile(tireToBeInserted);
 						InsertTire insertTire = new InsertTire();
 						insertTire.setVisible(true);
+						
 					}
-					
 				}
-			
 			}
 			else{
 				JOptionPane.showMessageDialog(null, "Please Input a Valid Tire Brand");
 				brandTxtField.setText("");
 			}
+		}
+		catch (Exception e) {
+			// TODO: handle exception
+			String msg = e.toString() + " \n(Add tire brand)";
+ 			JOptionPane.showMessageDialog(null, msg);
+ 			e.printStackTrace();
+		}
 			
 	
 			

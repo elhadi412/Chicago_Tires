@@ -1,10 +1,6 @@
 import java.awt.EventQueue;
 import java.awt.Image;
 import java.sql.Connection;
-import java.util.Calendar;
-import java.util.Timer;
-import java.util.TimerTask;
-
 import javax.swing.*;
 import java.sql.*;
 import java.awt.Color;
@@ -13,10 +9,6 @@ import java.awt.event.ActionEvent;
 import java.awt.*;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
-import java.io.BufferedInputStream;
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 
 public class Login {
 

@@ -9,6 +9,11 @@ import java.awt.Color;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import java.awt.event.ActionListener;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JLabel;
@@ -16,7 +21,7 @@ import javax.swing.JOptionPane;
 import java.awt.Font;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.Collections;
 import java.sql.Timestamp;
 import javax.swing.JComboBox;
 
@@ -24,19 +29,24 @@ public class InsertTire extends JFrame {
 
 	private JPanel contentPane;
 	private final String[] tireOrientation = new String[]{"N/A","Set","Pair","Single"};
-	private static final String[] tireBrandz = new String[]{"Select Brand", "ADVANTA", "AVON TYRES", "BFGOODRICH", "BRIDGESTONE", "COOPER TIRES", "CONTINENTAL", "DUNLOP TIRES", 
-															"DURO", "DICK CEPEK", "FALKEN TIRES", "FUZION", "FIRESTONE", "GENERAL TIRE", "GOOD YEAR", "HANKOOK", "HOOSIER RACING TIRE", 
-															"KUMHO TIRE", "LAUFENN", "MICHELIN", "MILESTAR", "NEXEN TIRE", "PIRELLI", "POWER KING", "RIKEN", "SUMITOMO TIRES", "TOYOTIRES",
-															"UNIROYAL", "VREDESTEIN TIRES", "WEST LAKE", "YOKOHAMA"};
-	private static ArrayList<String> brandList = new ArrayList<>(Arrays.asList(tireBrandz));
-	private final String[] tireCondition = new String[]{"Select Condition","A","B","C","New"};
-
+	
+	private static String[] tireBrandz = new String[]{"Select Brand", "ADVANTA", "AVON TYRES", "BFGOODRICH", "BRIDGESTONE", "COOPER TIRES", "CONTINENTAL", "DUNLOP TIRES", 
+														"DURO", "DICK CEPEK", "FALKEN TIRES", "FUZION", "FIRESTONE", "GENERAL TIRE", "GOOD YEAR", "HANKOOK", "HERCULES TIRES", 
+														"HOOSIER RACING TIRE", "IRONMAN TIRES", 
+														"KUMHO TIRE", "LAUFENN", "MICHELIN", "MILESTAR", "NEXEN TIRE", "PIRELLI", "POWER KING", "RIKEN", "SUMITOMO TIRES", "TOYOTIRES",
+														"UNIROYAL", "VREDESTEIN TIRES", "WEST LAKE", "YOKOHAMA"};
+	private static ArrayList<String> brandList = readTireBrandFile();
+	final String[] tireCondition = new String[]{"Select Condition","A","B","C","New"};
+//	private static File tireBrandFile = new File("Resources/tire_brands.txt");
+//	private static final String fullPath = System.getProperty("user.home") + File.separator +  "tire_brands.txt";
 	
 
 	/**
 	 * Launch the application.
+	 * @throws IOException 
 	 */
-	public static void main(String[] args) {
+	public static void main(String[] args)  {
+		Tires.setTheLookAndFeel();
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
@@ -54,22 +64,27 @@ public class InsertTire extends JFrame {
 	private JTextField locationTxtField;
 	private JLabel lblCondition;
 	private JLabel lblSetpairsingle;
-	private JLabel lblNewLabel_1;
+	private JLabel addNewTire;
 	private JLabel addNewTrIcon;
 	private JLabel label;
 	private JButton insertBtn;
-	private JComboBox tire_orientation;
-	private JComboBox tireBrands;
-	private JComboBox conditionBox;
+	private JComboBox<String> tire_orientation;
+	private JComboBox<String> tireBrands;
+	private JComboBox<String> conditionBox;
 
 	/**
 	 * Create the frame.
+	 * @throws InterruptedException 
 	 */
+	
 	public InsertTire() {
 		connection = SqliteConnection.dbConnector();
 		
+		//readTireBrandFile();
+		System.out.println("EARLY ON, BRANDLIST IS: " + brandList.size());
+		
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		setBounds(100, 100, 643, 507);
+		setBounds(100, 100, 675, 526);
 		contentPane = new JPanel();
 		contentPane.setBackground(new Color(0, 153, 255));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -124,25 +139,28 @@ public class InsertTire extends JFrame {
 		lblSetpairsingle = new JLabel("Set/Pair/Single:");
 		lblSetpairsingle.setForeground(Color.BLACK);
 		lblSetpairsingle.setFont(new Font("Lucida Grande", Font.BOLD, 14));
-		lblSetpairsingle.setBounds(47, 308, 122, 31);
+		lblSetpairsingle.setBounds(47, 316, 122, 31);
 		contentPane.add(lblSetpairsingle);
 		
 		tire_orientation = new JComboBox(tireOrientation);
-		tire_orientation.setBounds(178, 298, 174, 55);
+		tire_orientation.setBounds(188, 306, 174, 55);
 		contentPane.add(tire_orientation);
 		
 		tireBrands = new JComboBox(brandList.toArray());
-		tireBrands.setBounds(176, 365, 174, 55);
+		tireBrands.setBounds(176, 365, 210, 55);
 		contentPane.add(tireBrands);
 		
 		conditionBox = new JComboBox(tireCondition);
-		conditionBox.setBounds(178, 243, 174, 43);
+		conditionBox.setBounds(188, 243, 174, 43);
 		contentPane.add(conditionBox);
 		
-		lblNewLabel_1 = new JLabel("Add a New Tire to Inventory");
-		lblNewLabel_1.setFont(new Font("Microsoft Sans Serif", Font.BOLD, 20));
-		lblNewLabel_1.setBounds(158, 8, 305, 55);
-		contentPane.add(lblNewLabel_1);
+		
+		Image image = new ImageIcon(this.getClass().getResource("/tireIcon.png")).getImage();
+		addNewTire = new JLabel("  Add a New Tire to Inventory");
+		addNewTire.setIcon(new ImageIcon(image));
+		addNewTire.setFont(new Font("Microsoft Sans Serif", Font.BOLD, 20));
+		addNewTire.setBounds(158, 8, 305, 55);
+		contentPane.add(addNewTire);
 		
 		addNewTrIcon = new JLabel("");
 		Image insertPgIcon = new ImageIcon(this.getClass().getResource("/tireIconBigger.png")).getImage();
@@ -152,7 +170,7 @@ public class InsertTire extends JFrame {
 		
 		label = new JLabel("Chicago Tires LLC");
 		label.setFont(new Font("Kokonor", Font.BOLD, 16));
-		label.setBounds(427, 452, 210, 27);
+		label.setBounds(465, 450, 210, 27);
 		contentPane.add(label);
 		
 	
@@ -182,8 +200,7 @@ public class InsertTire extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				dispose();
 				AddTireBrand tireBrand = new AddTireBrand();
-				tireBrand.setVisible(true);
-				
+				tireBrand.setVisible(true);				
 				
 			}
 		});
@@ -204,13 +221,20 @@ public class InsertTire extends JFrame {
 		try {
 			String query = "INSERT INTO Inventory(Size, Location, Condition, SetPairSingle, Brand,Timestamp)" + " values(?,?,?,?,?,?)";
 			
-			Integer.parseInt(sizeTxtField.getText());
+			//Integer.parseInt(sizeTxtField.getText());
 			
-			if(conditionBox.getSelectedItem().equals("Select Condition")){
+			if(sizeTxtField.getText().trim().equals("")){
+				JOptionPane.showMessageDialog(null, "Please enter a tire size");
+			}
+			else if(! sizeTxtField.getText().trim().equals("") && locationTxtField.getText().trim().equals("")){
+				JOptionPane.showMessageDialog(null, "Please enter a tire location");
+
+			}
+			else if((!sizeTxtField.getText().trim().equals("") && !locationTxtField.getText().trim().equals(""))   &&   conditionBox.getSelectedItem().equals("Select Condition")){
 				throw new Exception();
 			}
 			
-			if(tire_orientation.getSelectedItem().toString().equals("N/A")){
+			else if((!sizeTxtField.getText().trim().equals("") && !locationTxtField.getText().trim().equals("") && !conditionBox.getSelectedItem().equals("Select Condition")) && tire_orientation.getSelectedItem().toString().equals("N/A")){
 				JOptionPane.showMessageDialog(null, "Please select either Set, Pair, Single");
 			}
 			else if(tireBrands.getSelectedItem().toString().equals("Select Brand")){
@@ -234,7 +258,7 @@ public class InsertTire extends JFrame {
 			pStatement.execute();
 			
 			pStatement.close();
-			JOptionPane.showMessageDialog(null, "Added " + sizeTxtField.getText() + " to database.");
+			JOptionPane.showMessageDialog(null, "<html>Added <b><u>" + sizeTxtField.getText() + "</u></b> to database.</html>");
 			BackUp backUp = new BackUp();
 			backUp.export();
 				
@@ -257,5 +281,201 @@ public class InsertTire extends JFrame {
 			}
 		}
 	}
+	
+	
+	public static void updateTireBrandFile(String brand){
+		 try {		
+			 String fullPath = System.getProperty("user.home") + File.separator +  "ChicagoTiresLLC" + File.separator + "tire_brands.txt";
+	
+			 //String fullPath = System.getProperty("user.home") + File.separator +  "tire_brands.txt";
+			 	FileWriter fileWriter = new FileWriter(fullPath,true);
+			 	fileWriter.write("\r\n");
+			 	fileWriter.write(brand);
+			 	fileWriter.close();
+			    System.out.println("Successfully wrote to the file.");
+			    updateBrandList(brand);	
+		    } 
+		 catch (IOException e) {
+				e.printStackTrace();
+				String msg = e.toString() + " \n (updateTireBrandFile)";
+	 			JOptionPane.showMessageDialog(null, msg);
+		    }
+	}
+//	public static void updateTireBrandFile(String brand) throws IOException{
+//		try {
+//			FileWriter writer = new FileWriter(tireBrandFile,true);
+//			writer.write(brand+"\n");
+//			writer.close();
+//			System.out.println("\nSuccessfully updated file with brand " + brand);
+//			updateBrandList(brand);			
+//
+//			
+//		} catch (IOException e) {
+//			// TODO: handle exception
+//			e.printStackTrace();
+//			String msg = e.toString() + " \n (updateTireBrandFile)";
+// 			JOptionPane.showMessageDialog(null, msg);
+//		}
+//		
+//	}
+	private static void updateBrandList(String brand){
+		brandList.add(brand);
+		brandList.remove("Select Brand");
+		Collections.sort(brandList);
+		brandList.add(0,"Select Brand");
+		System.out.println("UPDATE BRANDLIST: " + brandList.size());
+		
+	}
+	
+	public static void doesFileExist(){
+		try{
+			String fullPath = System.getProperty("user.home") + File.separator +  "ChicagoTiresLLC" + File.separator + "tire_brands.txt";
+			File file = new File(fullPath);
+			if(file.createNewFile()){
+				writeFile(tireBrandz);
+				System.out.println("FILE CREATED and wrote tire brands to file tire_brands.txt");
+			}
+			else{
+				System.out.println("FILE EXISTS ALREADY!");
+			}
+		}
+		catch (IOException e) {
+			// TODO: handle exception
+			System.out.print("WE HAVE A PROBLEM");
+		}
+	}
+	public static void writeFile(String[] brands){
+		 try {
+				String fullPath = System.getProperty("user.home") + File.separator +  "ChicagoTiresLLC" + File.separator + "tire_brands.txt";
+				FileWriter myWriter = new FileWriter(fullPath,true);
+				int i = 0;
+			    for(String brand : brands){
+			    	if(i==brands.length-1){
+			    		myWriter.write(brand);
+			    	}
+			    	else{
+			    		myWriter.write(brand+"\r\n");
+			    	}
+			    	i++;
+			    }
+			      myWriter.close();
+			      System.out.println("Successfully wrote to the file.");
+		    } catch (IOException e) {
+			      System.out.println("An error occurred.");
+			      e.printStackTrace();
+		    }
+	}
+	
+	
+	
+	
+	
+	public static ArrayList<String> readTireBrandFile(){
+		ArrayList<String> brands = new ArrayList<>();
+		String fullPath = System.getProperty("user.home") + File.separator +  "ChicagoTiresLLC" + File.separator + "tire_brands.txt";
+
+		File file = new File(fullPath);
+		if(!file.isFile()){
+			doesFileExist();
+		}
+
+		try{
+			BufferedReader bufferedReader = new BufferedReader(new FileReader(fullPath));
+			String line, selectBrand="";
+			while((line = bufferedReader.readLine())!=null){
+				if(line.equals("Select Brand")){
+					selectBrand = line;
+				}
+				else{
+					brands.add(line);
+				}
+		}
+		 Collections.sort(brands);
+     	brands.add(0,selectBrand);
+        System.out.println("\nSUCCESSFULLY READ FILE: ");
+		bufferedReader.close();
+        return brands;
+
+		}
+		catch (IOException e) {
+			// TODO: handle exception
+			JOptionPane.showMessageDialog(null, e);
+		}
+		return brands;
+	}
+	
+//	public static ArrayList<String> readTireBrandFile(){
+//		String filename = "tire_brands.txt";
+//		ArrayList<String> brandzz = new ArrayList<>();
+//		try {
+//			ClassLoader classLoader = InsertTire.class.getClassLoader();			//getClass().getClassLoader();
+//			InputStream inputStream = classLoader.getResourceAsStream(filename); 
+//			if(inputStream == null){
+//				throw new IllegalArgumentException();
+//			}
+//			else{
+//				try {
+//					BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
+//		            String line, selectBrand="";
+//		            while ((line = reader.readLine()) != null) {
+//		            	if(line.equals("Select Brand")){
+//							selectBrand = line;
+//						}
+//						else{
+//							brandzz.add(line);
+//						}
+//		            }
+//		            Collections.sort(brandzz);
+//	            	brandzz.add(0,selectBrand);
+//		            inputStream.close();
+//		            reader.close();
+//		            System.out.println("\nSUCCESSFULLY READ FILE: ");
+//		            return brandzz;
+//		            
+//					
+//				} catch (Exception e) {
+//					// TODO: handle exception
+//					JOptionPane.showMessageDialog(null, e);
+//				}
+//				
+//	           	}
+//			
+//			
+//		} catch (IllegalArgumentException e) {
+//			// TODO: handle exception
+//			JOptionPane.showMessageDialog(null, e);
+//		}
+//		return brandzz;
+//		
+//		
+//		
+//		
+////		try {
+////			brandList = new ArrayList<>();
+////			Scanner scanner = new Scanner(tireBrandFile);
+////			String selectBrand = "";
+////			while(scanner.hasNextLine()){
+////				String line = scanner.nextLine();
+////				if(line.equals("Select Brand")){
+////					selectBrand = line;
+////				}
+////				else{
+////					brandList.add(line);
+////				}
+////				Collections.sort(brandList);
+////			}
+////			scanner.close();
+////			brandList.add(0,selectBrand);
+////			System.out.println("Successfully read brands from file");
+////
+////			
+////		} catch (FileNotFoundException e) {
+////			// TODO: handle exception
+////			e.printStackTrace();
+////			String msg = e.toString() + " \n(readTireBrandFile)";
+//// 			JOptionPane.showMessageDialog(null, msg);
+////
+////		}
+//	}
 	
 }
