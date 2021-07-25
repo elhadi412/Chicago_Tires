@@ -10,4 +10,4 @@ To store the tire inventory, the system leverages the SQLITE database via the JD
 
 The business is now using the system to keep track of their new tire quantity. It's helping the owner know when to buy tires and which tires he needs more of.
 
-PS: The University of Iowa news source, Iowa Now, wrote an article on this system. [Check it out!](https://stories.uiowa.edu/spring-2021-graduates-elhadi-elhadi){:target="_blank" rel="noopener"} 
+PS: The University of Iowa news source, Iowa Now, wrote an article on this system. [Check it out!](https://stories.uiowa.edu/spring-2021-graduates-elhadi-elhadi)
