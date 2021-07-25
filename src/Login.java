@@ -178,8 +178,4 @@ public class Login {
 	}
 	
 }
-/**
- * mustafa -> Ypsm@777
- * elhadi -> Hodhod#5
- * hussein -> Chicago_1630
- */
+
