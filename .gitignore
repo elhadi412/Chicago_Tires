@@ -1,7 +1,3 @@
-
-# Default ignored files
-/workspace.xml
-
 #Ignore Mac system files
 .DS_store
 
