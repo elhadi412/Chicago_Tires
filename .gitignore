@@ -1,12 +1,2 @@
-#Ignore Mac system files
+
 .DS_store
-
-#Ignore example data file
-data.xlsx
-
-#Ignore .settings
-.settings	
-
-#Ignore sqlite gui
-EmployeeData(forGUI).sqlite
-resource/EmployeeData(forGUI).sqlite
